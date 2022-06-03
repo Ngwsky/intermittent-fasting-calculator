@@ -523,6 +523,10 @@
 </LayoutGrid>
 
 <style global>
+	.px-0 {
+		padding-left: 0;
+		padding-right: 0;
+	}
 	.g-0 {
 		margin: 0;
 		padding-left: 0;

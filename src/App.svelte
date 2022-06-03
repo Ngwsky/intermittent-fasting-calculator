@@ -49,16 +49,12 @@
 	</Row>
 </TopAppBar>
 <AutoAdjust {topAppBar}>
-	<div class="container pt-0 px-0">
+	<div class="container pt-0">
     <Home />
   </div>
 </AutoAdjust>
 
 <style>
-	.px-0 {
-		padding-left: 0;
-		padding-right: 0;
-	}
 	.pt-0 {
 		padding-top: 0;
 	}
