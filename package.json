@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build",
-    "preview": "vite preview",
+    "preview": "vite preview --port 4174",
     "prepare": "npm run smui-theme-light && npm run smui-theme-dark",
     "smui-theme-light": "smui-theme compile public/smui.css -i src/theme",
     "smui-theme-dark": "smui-theme compile public/smui-dark.css -i src/theme/dark",
