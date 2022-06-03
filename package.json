@@ -10,11 +10,13 @@
     "prepare": "npm run smui-theme-light && npm run smui-theme-dark",
     "smui-theme-light": "smui-theme compile public/smui.css -i src/theme",
     "smui-theme-dark": "smui-theme compile public/smui-dark.css -i src/theme/dark",
-    "check": "svelte-check --tsconfig ./tsconfig.json"
+    "check": "svelte-check --tsconfig ./tsconfig.json",
+    "deploy": "gh-pages -d dist"
   },
   "devDependencies": {
     "@sveltejs/vite-plugin-svelte": "^1.0.0-next.30",
     "@tsconfig/svelte": "^2.0.1",
+    "gh-pages": "^4.0.0",
     "smui-theme": "^6.0.0-beta.16",
     "svelte": "^3.44.0",
     "svelte-check": "^2.2.7",
