@@ -1,0 +1,49 @@
+@use 'sass:color';
+
+@use '@material/theme/color-palette';
+
+@use '@material/theme/index' as theme with (
+	$primary: color-palette.$indigo-600,
+	$secondary: color-palette.$blue-grey-600,
+	$background: #fafafa,
+	$surface: #fff,
+	$error: color-palette.$red-900,
+	$on-primary: color-palette.$indigo-100,
+	$on-secondary: color-palette.$blue-grey-100,
+	$on-surface: rgba(#000, 0.87)
+);
+
+@use './app';
+
+html,
+body {
+	background-color: theme.$background;
+	color: theme.$on-surface;
+}
+
+a {
+	color: #40b3ff;
+}
+a:visited {
+	color: color.scale(#40b3ff, $lightness: -35%);
+}
+
+.mdc-top-app-bar.bc-surface {
+	background-color: #f5f5f5;
+	background-color: var(--mdc-theme-surface, #f5f5f5);
+	color: rgba(#000, 0.87);
+	color: var(--mdc-theme-on-surface, rgba(#000, 0.87));
+}
+
+.mdc-top-app-bar.bc-surface .mdc-top-app-bar__action-item,
+.mdc-top-app-bar.bc-surface .mdc-top-app-bar__navigation-icon {
+	color: rgba(#000, 0.87);
+	color: var(--mdc-theme-on-surface, rgba(#000, 0.87));
+}
+
+.floating-label {
+	font-size: 1rem;
+	color: rgba(0, 0, 0, 0.6);
+	transform-origin: center left;
+	transform: scale(0.75);
+}

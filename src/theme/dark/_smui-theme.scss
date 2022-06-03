@@ -1,0 +1,49 @@
+@use 'sass:color';
+
+@use '@material/theme/color-palette';
+
+@use '@material/theme/index' as theme with (
+	$primary: color-palette.$indigo-200,
+	$secondary: color-palette.$blue-grey-200,
+	$background: #121212,
+	$surface: color.adjust(#121212, $lightness: 5%),
+	$error: color-palette.$red-700,
+	$on-primary: color-palette.$indigo-700,
+	$on-secondary: color-palette.$blue-grey-700,
+	$on-surface: color-palette.$grey-50
+);
+
+@use '../app';
+
+html,
+body {
+	background-color: theme.$background;
+	color: theme.$on-surface;
+}
+
+a {
+	color: #40b3ff;
+}
+a:visited {
+	color: color.scale(#40b3ff, $lightness: -35%);
+}
+
+.mdc-top-app-bar.bc-surface {
+	background-color: #212125;
+	background-color: var(--mdc-theme-surface, #212125);
+	color: #fff;
+	color: var(--mdc-theme-on-surface, #fff);
+}
+
+.mdc-top-app-bar.bc-surface .mdc-top-app-bar__action-item,
+.mdc-top-app-bar.bc-surface .mdc-top-app-bar__navigation-icon {
+	color: #fff;
+	color: var(--mdc-theme-on-surface, #fff);
+}
+
+.floating-label {
+	font-size: 1rem;
+	color: rgba(250, 250, 250, 0.6);
+	transform-origin: center left;
+	transform: scale(0.75);
+}
