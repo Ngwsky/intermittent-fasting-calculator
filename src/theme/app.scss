@@ -4,8 +4,13 @@ html,
 body {
 	padding: 0;
 	margin: 0;
+	font-family: 'Roboto', 'Noto Sans JP', 'Noto Emoji', sans-serif;
 }
 
 .container {
 	padding: 30px;
+}
+
+:root {
+	--mdc-typography-subtitle1-font-family: 'Roboto', 'Noto Sans JP', 'Noto Emoji', sans-serif;
 }

@@ -1,18 +1,13 @@
 <script lang="ts">
+	import { _ } from 'svelte-i18n';
 	import Card, { Content } from '@smui/card';
 	import Textfield from '@smui/textfield';
-	import Icon from '@smui/textfield/icon';
+	//	import Icon from '@smui/textfield/icon';
 	import HelperText from '@smui/textfield/helper-text';
 	import LayoutGrid, { Cell } from '@smui/layout-grid';
 	import Select, { Option } from '@smui/select';
 	import Cycle from '../lib/Cycle.svelte';
 	import Table from '../lib/DataTable.svelte';
-	//	import List, { Item, Text, Meta, Label } from '@smui/list';
-	//	import Checkbox from '@smui/checkbox';
-	//	import SegmentedButton, { Segment } from '@smui/segmented-button';
-	//	import { Label } from '@smui/common';
-	//	import Radio from '@smui/radio';
-	//	import FormField from '@smui/form-field';
 
 	export const prerender = true;
 
@@ -22,7 +17,6 @@
 	let age: number = 40;
 	let bodyfatpercentage: number = 15;
 	let gender: string;
-	//	let genders = ['Female', 'Male', 'Other'];
 	let activitylevel: number = 1.4;
 	let restdaycalp: number = 20;
 	let workoutdaycalp: number = 10;
@@ -31,41 +25,41 @@
 	let cycledays: boolean[] = [];
 	let executionCycles: number = 8;
 	let dayheader: string[] = ['1', '2', '3', '4', '5', '6', '7'];
-	let bmrTblHeaders: any[] = [
+	let bmrTblItems: any[] = [];
+	let selectedBrm: any[] = [];
+	$: bmrTblHeaders = [
 		{
-			text: 'Method',
+			text: $_('bmrCalculationMethod'),
 			value: 'name'
 		},
 		{
-			text: 'BMR (㎉)',
+			text: $_('bmr'),
 			value: 'calories'
 		}
 	];
-	let bmrTblItems: any[] = [];
-	let selectedBrm: any[] = [];
-	let scheduleTblHeaders: any[] = [
+	$: scheduleTblHeaders = [
 		{
-			text: 'Date',
+			text: $_('date'),
 			value: 'date'
 		},
 		{
-			text: 'Weight',
+			text: $_('bodyWeight') + '(㎏)',
 			value: 'weight'
 		},
 		{
-			text: 'Calorie',
+			text: $_('calorie') + '(㎉)',
 			value: 'cal'
 		},
 		{
-			text: 'Protein',
+			text: $_('protein') + '(ℊ)',
 			value: 'protein'
 		},
 		{
-			text: 'Fat',
+			text: $_('fat') + '(ℊ)',
 			value: 'fat'
 		},
 		{
-			text: 'Carb',
+			text: $_('carb') + '(ℊ)',
 			value: 'carb'
 		}
 	];
@@ -308,21 +302,22 @@
 
 <LayoutGrid class="g-0">
 	<Cell spanDevices={{ desktop: 12, tablet: 8, phone: 4 }}>
-		<div class="mdc-typography--subtitle1">Intermittent Fasting Calculator</div>
+		<div class="mdc-typography--subtitle1">{$_('pageTitle')}</div>
 	</Cell>
 	<Cell spanDevices={{ desktop: 6, tablet: 8, phone: 4 }}>
 		<Card>
 			<Content>
-				<div class="mdc-typography--subtitle1">Your profile</div>
+				<div class="mdc-typography--subtitle1">{$_('yourProfile')}</div>
 				<LayoutGrid class="g-0">
 					<Cell>
 						<Textfield
 							bind:value={weight}
 							type="number"
-							label="Weight"
+							label={$_('bodyWeight')}
 							suffix="㎏"
 							input$min="3"
 							input$max="999"
+							input$style="text-align: end;"
 						>
 							<HelperText slot="helper" />
 						</Textfield>
@@ -331,10 +326,11 @@
 						<Textfield
 							bind:value={bodyfatpercentage}
 							type="number"
-							label="Body fat"
+							label={$_('bodyFatPercentage')}
 							suffix="%"
 							input$min="1"
 							input$max="100"
+							input$style="text-align: end;"
 						>
 							<HelperText slot="helper" />
 						</Textfield>
@@ -343,10 +339,11 @@
 						<Textfield
 							bind:value={height}
 							type="number"
-							label="Height"
+							label={$_('bodyHeight')}
 							suffix="㎝"
 							input$min="1"
 							input$max="300"
+							input$style="text-align: end;"
 						>
 							<HelperText slot="helper" />
 						</Textfield>
@@ -355,52 +352,33 @@
 						<Textfield
 							bind:value={age}
 							type="number"
-							label="Age"
+							label={$_('age')}
 							suffix=""
 							input$min="0"
 							input$max="99"
+							input$style="text-align: end;"
 						>
 							<HelperText slot="helper" />
 						</Textfield>
 					</Cell>
 					<Cell>
-						<Select bind:value={gender} label="Gender">
+						<Select bind:value={gender} label={$_('gender')}>
 							<Option value="" />
-							<Option value="F">Female</Option>
-							<Option value="M">Male</Option>
+							<Option value="F">{$_('female')}</Option>
+							<Option value="M">{$_('male')}</Option>
 						</Select>
 					</Cell>
-					<!--
-				<Cell>
-					<SegmentedButton segments={genders} let:segment singleSelect bind:gender>
-						<Segment {segment}>
-							<Label>{segment}</Label>
-						</Segment>
-					</SegmentedButton>
-				</Cell>
-				<Cell>
-					<FormField>
-						<Radio bind:group={gender} value="Female" touch /><span slot="label">Female</span>
-					</FormField>
-					<FormField>
-						<Radio bind:group={gender} value="Male" touch /><span slot="label">Male</span>
-					</FormField>
-					<FormField>
-						<Radio bind:group={gender} value="Other" touch /><span slot="label">Other</span>
-					</FormField>
-				</Cell>
-				-->
 				</LayoutGrid>
 			</Content>
 		</Card>
 	</Cell>
-	<Cell spanDevices={{ desktop: 12, tablet: 8, phone: 4 }}>
+	<Cell spanDevices={{ desktop: 6, tablet: 8, phone: 4 }}>
 		<Card>
 			<Content>
-				Plan
+				{$_('plan')}
 				<LayoutGrid>
 					<Cell spanDevices={{ desktop: 12, tablet: 8, phone: 4 }}>
-						<div class="floating-label">Select a BMR calculation method.</div>
+						<div class="floating-label">{$_('selectBmr')}</div>
 						<Table
 							headers={bmrTblHeaders}
 							items={bmrTblItems}
@@ -409,26 +387,26 @@
 							singleSelect
 						/>
 					</Cell>
-					<Cell spanDevices={{ desktop: 4, tablet: 8, phone: 4 }}>
+					<Cell spanDevices={{ desktop: 12, tablet: 8, phone: 4 }}>
 						<Textfield
 							bind:value={activitylevel}
 							type="number"
-							label="BMR × Activity Level = TDEE"
+							label={$_('tdee=bmr*activityLevel')}
 							input$min="1.0"
 							input$step="0.1"
 							input$max="2.0"
 							prefix={bmr + ' ×'}
 							suffix={'= ' + Math.round(bmr * activitylevel) + ' ㎉'}
-							input$style="text-align: center;"
+							input$style="text-align: center; min-width: 128px;"
 						>
-							<HelperText slot="helper">Low: 1.4, Mid: 1.6, High: 1.8</HelperText>
+							<HelperText slot="helper">{$_('activityLevelHelper')}</HelperText>
 						</Textfield>
 					</Cell>
-					<Cell>
+					<Cell spanDevices={{ desktop: 12, tablet: 4, phone: 4 }}>
 						<Textfield
 							bind:value={workoutdaycalp}
 							type="number"
-							label="Gain day"
+							label={$_('gainDay')}
 							input$min="0"
 							input$max="100"
 							prefix={tdee + ' + '}
@@ -438,11 +416,11 @@
 							<HelperText slot="helper" />
 						</Textfield>
 					</Cell>
-					<Cell>
+					<Cell spanDevices={{ desktop: 12, tablet: 4, phone: 4 }}>
 						<Textfield
 							bind:value={restdaycalp}
 							type="number"
-							label="Cut day"
+							label={$_('cutDay')}
 							input$min="0"
 							input$max="100"
 							prefix={tdee + ' - '}
@@ -452,43 +430,30 @@
 							<HelperText slot="helper" />
 						</Textfield>
 					</Cell>
-					<Cell>
+					<Cell spanDevices={{ desktop: 4, tablet: 2, phone: 4 }}>
 						<Textfield
 							bind:value={dayspercycle}
 							type="number"
-							label="Days/Cycle"
-							suffix="days"
+							label={$_('numberOfDaysInOneCycle')}
+							suffix={$_('days')}
 							input$min="2"
 							input$max="7"
+							input$style="text-align: center; min-width: 64px;"
 						>
 							<HelperText slot="helper" />
 						</Textfield>
 					</Cell>
-					<Cell spanDevices={{ desktop: 6, tablet: 8, phone: 4 }}>
-						<div class="floating-label">Check the gain day in a cycle.</div>
+					<Cell spanDevices={{ desktop: 8, tablet: 6, phone: 4 }}>
+						<div class="floating-label">{$_('checkGainDayInOneCycle')}</div>
 						<Cycle headers={dayheader} values={cycledays} />
 					</Cell>
-					<!--
-					<Cell>
-						<List class="cycledaylist" checkList>
-							{#each cycledays as cycleday, i}
-								<Item>
-									<Label>{i + 1}</Label>
-									<Meta>
-										<Checkbox bind:checked={cycledays[i]} />
-									</Meta>
-								</Item>
-							{/each}
-						</List>
-					</Cell>
-					-->
-					<Cell>
+					<Cell spanDevices={{ desktop: 12, tablet: 4, phone: 4 }}>
 						<Textfield
 							bind:value={executionCycles}
 							type="number"
-							label="Execution cycles"
-							prefix={dayspercycle + ' days × '}
-							suffix={'cycles = ' + executionCycles * dayspercycle + ' days'}
+							label={$_('numberOfExecutionCycles')}
+							prefix={dayspercycle + $_("days") + ' × '}
+							suffix={$_("cycles") + ' = ' + executionCycles * dayspercycle + ' ' + $_("days")}
 							input$min="1"
 							input$max="99"
 							input$style="text-align: center;"
@@ -500,11 +465,13 @@
 						<Textfield
 							bind:value={startdt}
 							type="date"
-							label="From - To"
+							label={$_('fromTo')}
 							suffix={' - ' + toString(endDt)}
 							input$style="text-align: center;"
 						>
+						<!--
 							<Icon class="material-icons" slot="leadingIcon">calendar_today</Icon>
+						-->
 							<HelperText slot="helper" />
 						</Textfield>
 					</Cell>
@@ -515,7 +482,7 @@
 	<Cell spanDevices={{ desktop: 12, tablet: 8, phone: 4 }}>
 		<Card>
 			<Content>
-				<div class="mdc-typography--subtitle1">Schedule.</div>
+				<div class="mdc-typography--subtitle1">{$_('schedule')}</div>
 				<Table headers={scheduleTblHeaders} items={scheduleTblItems} height={innerHeight - 80} />
 			</Content>
 		</Card>

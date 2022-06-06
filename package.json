@@ -28,6 +28,7 @@
   },
   "dependencies": {
     "@mdi/js": "^6.7.96",
+    "@rollup/plugin-json": "^4.1.0",
     "@smui/card": "^6.0.0-beta.16",
     "@smui/checkbox": "^6.0.0-beta.16",
     "@smui/common": "^6.0.0-beta.16",
@@ -35,6 +36,7 @@
     "@smui/icon-button": "^6.0.0-beta.16",
     "@smui/layout-grid": "^6.0.0-beta.16",
     "@smui/textfield": "^6.0.0-beta.16",
-    "@smui/top-app-bar": "^6.0.0-beta.16"
+    "@smui/top-app-bar": "^6.0.0-beta.16",
+    "svelte-i18n": "^3.4.0"
   }
 }
