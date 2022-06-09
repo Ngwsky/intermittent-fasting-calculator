@@ -8,6 +8,7 @@ export default defineConfig({
   plugins: [
     svelte(),
     VitePWA({
+      registerType: 'autoUpdate',
       includeAssets: ['favicon.svg', 'favicon.ico', 'robots.txt', 'apple-touch-icon.png'],  
       manifest: {
         name: 'Intermittent Fasting Calculator',
