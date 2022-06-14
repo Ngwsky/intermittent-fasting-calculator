@@ -52,7 +52,7 @@
 			v.__selected = selectedItemList.some((si) => {
 				return headers.findIndex((h) => si[h.value] != v.item[h.value]) === -1;
 			});
-			if (v.__selected) selectedItemIndexes.push(i);
+			if (v.__selected) selectedItemIndexes.push(String(i));
 		});
 		console.debug('updateSelected', selectedItemList, refItems);
 	}
@@ -171,7 +171,7 @@
 		</Row>
 	</Head>
 	<Body>
-		{#each vitems as vitem, i}
+		{#each vitems as vitem}
 			<Row>
 				{#if showSelect}
 					<Cell checkbox>
