@@ -14,11 +14,12 @@
 	import Home from "./routes/Home.svelte";
 	import Select, { Option } from "@smui/select";
 	import language2text from "./lib/lang";
+	import { preferences } from './stores/stores';
 
 	let topAppBar: TopAppBarComponentDev;
-	let darkMode =
-		typeof window !== "undefined" &&
-		window.matchMedia("(prefers-color-scheme: dark)").matches;
+	let darkMode = (typeof $preferences.darkMode !== "undefined") ? $preferences.darkMode : 
+		(typeof window !== "undefined" &&
+		window.matchMedia("(prefers-color-scheme: dark)").matches);
 
 	function toggleTheme(dark: boolean) {
 		if (typeof document !== "undefined") {
@@ -36,8 +37,17 @@
 		}
 	}
 
+	function updatePrefernces(dark: boolean, loc: string) {
+		$preferences.darkMode = dark;
+		$preferences.locale = loc;
+	}
+
 	$: {
 		toggleTheme(darkMode);
+	}
+
+	$: {
+		updatePrefernces(darkMode, $locale);
 	}
 </script>
 

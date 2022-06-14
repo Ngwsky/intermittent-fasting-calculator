@@ -188,8 +188,8 @@
 		resetSelectedBrm(bmrTblItems);
 	}
 
-	$: bmr = selectedBrm ? selectedBrm[0].calories : undefined;
-	$: bmrMethod = selectedBrm ? selectedBrm[0].name : undefined;
+	$: bmr = (selectedBrm && 0 < selectedBrm.length) ? selectedBrm[0].calories : undefined;
+	$: bmrMethod = (selectedBrm && 0 < selectedBrm.length) ? selectedBrm[0].name : undefined;
 	$: tdee = Math.round(bmr * activitylevel);
 
 	function resetCycle(dpc: number) {
@@ -385,6 +385,7 @@
 							bind:value={selectedBrm}
 							showSelect
 							singleSelect
+							radio
 						/>
 					</Cell>
 					<Cell spanDevices={{ desktop: 12, tablet: 8, phone: 4 }}>

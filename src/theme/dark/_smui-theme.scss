@@ -3,13 +3,13 @@
 @use '@material/theme/color-palette';
 
 @use '@material/theme/index' as theme with (
-	$primary: color-palette.$indigo-200,
-	$secondary: color-palette.$blue-grey-200,
+	$primary: color-palette.$indigo-a100,
+	$secondary: color-palette.$deep-purple-a100,
 	$background: #121212,
 	$surface: color.adjust(#121212, $lightness: 5%),
 	$error: color-palette.$red-700,
-	$on-primary: color-palette.$indigo-700,
-	$on-secondary: color-palette.$blue-grey-700,
+	$on-primary: color-palette.$indigo-800,
+	$on-secondary: color-palette.$deep-purple-800,
 	$on-surface: color-palette.$grey-50
 );
 

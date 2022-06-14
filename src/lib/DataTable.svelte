@@ -22,7 +22,9 @@
 	export let showSelect: boolean = false;
 	export let value: any[] = [];
 	export let singleSelect: boolean = false;
+	export let radio: boolean = false;
 	export let height: number = 0;
+
 	/*
 	export let bench: number = 0;
 	export let multiSort: boolean = false;
@@ -30,6 +32,7 @@
 	export let dense: boolean = false;
     */
 
+	let selectedItemIndexes: string[] = [];
 	let refItems: readonly any[] = [];
 	let filteredAndSortedItems: readonly any[] = [];
 	let vitems: readonly any[] = [];
@@ -44,13 +47,23 @@
 	}
 
 	function updateSelected(selectedItemList: any[]) {
-		refItems.forEach((i) => {
-			i.__selected = selectedItemList.some((si) => {
-				return headers.findIndex((h) => si[h.value] != i.item[h.value]) === -1;
+		selectedItemIndexes = [];
+		refItems.forEach((v, i) => {
+			v.__selected = selectedItemList.some((si) => {
+				return headers.findIndex((h) => si[h.value] != v.item[h.value]) === -1;
 			});
-			return i;
+			if (v.__selected) selectedItemIndexes.push(i);
 		});
 		console.debug('updateSelected', selectedItemList, refItems);
+	}
+
+	function filterAndSort(ritems: readonly any[]) {
+		console.debug('filterAndSort', ritems);
+		filteredAndSortedItems = Object.freeze(
+			ritems.map((v, i) => {
+				return { ...v, __itemIndex: i };
+			})
+		);
 	}
 
 	$: {
@@ -62,35 +75,80 @@
 	}
 
 	$: {
-		filteredAndSortedItems = Object.freeze(
-			refItems.map((v, i) => {
-				return { ...v, __itemIndex: i };
-			})
-		);
-		console.debug('filteredAndSortedItems', filteredAndSortedItems);
+		filterAndSort(refItems);
 	}
 
 	$: vitems = Object.freeze(filteredAndSortedItems.slice());
 
-	function selectRow(event: any, rownum: number) {
-		console.debug('selectRow', event);
+	$: {
+		changeSelected(selectedItemIndexes);
+	}
+
+	function changeSelected(selected: string[]) {
+		console.debug('changeSelected', selected);
+		if (selected) {
+			if (0 < selected.length) {
+				refItems.forEach((ritem) => {
+					if (0 <= selected.findIndex(s => ritem.__itemIndex == selected)) {
+						ritem.__selected = true;
+					} else {
+						ritem.__selected = false;
+					}
+				});
+			} else {
+				refItems.forEach((ritem) => {
+					ritem.__selected = false;
+				});
+			}
+		}
+	}
+
+	function selectRow(event: any, itemindex: string) {
+		let i = Number(itemindex);
+
+		console.debug('selectRow', event, itemindex, refItems[i]);
+
+		if (singleSelect) {
+			if (selectedItemIndexes.length === 1) {
+				if (selectedItemIndexes[0] === itemindex && radio) {
+					console.debug('selectRow', 'do nothing');
+					event.preventDefault();
+					event.stopPropagation();
+				} else if (selectedItemIndexes[0] !== itemindex) {
+					console.debug('selectRow', 'shift');
+					selectedItemIndexes.shift();
+				}
+			}
+		}
+/*
 		const itemindex = vitems[rownum].__itemIndex;
 		const filterditemindex = filteredAndSortedItems.findIndex((fi) => fi.__itemIndex === itemindex);
 
 		refItems[itemindex].__selected = !refItems[itemindex].__selected;
 		filteredAndSortedItems[filterditemindex].__selected =
 			!filteredAndSortedItems[filterditemindex].__selected;
+
 		if (singleSelect) {
 			value = [];
+			selectedItemIndexes = [];
 			refItems.forEach((ci, i) => {
 				if (i !== itemindex) ci.__selected = false;
 			});
 			filteredAndSortedItems.forEach((fi) => {
 				if (fi.__itemIndex !== itemindex) fi.__selected = false;
 			});
+
+			let r = event.target.closest('tbody').rows;
+			for (let i = 0; i < r.length; i++) {
+				let cb = r[i].cells[0].querySelector('input');
+				if (cb.checked && cb.value != itemindex) {
+					r[i].classList.remove('mdc-data-table__row--selected');
+				}
+			}
 		}
 
 		value = items.filter((item, index) => refItems[index].__selected);
+		*/
 	}
 </script>
 
@@ -102,7 +160,7 @@
 		<Row>
 			{#if showSelect}
 				<Cell checkbox>
-					{#if !singleSelect}
+					{#if !singleSelect && !radio}
 						<Checkbox />
 					{/if}
 				</Cell>
@@ -117,7 +175,12 @@
 			<Row>
 				{#if showSelect}
 					<Cell checkbox>
-						<Checkbox on:change={(e) => selectRow(e, i)} checked={vitem.__selected} />
+						<Checkbox
+							bind:group={selectedItemIndexes}
+							value={vitem.__itemIndex}
+							checked={vitem.__selected}
+							on:click={(e) => selectRow(e, vitem.__itemIndex)}
+						/>
 					</Cell>
 				{/if}
 				{#each headers as header}
