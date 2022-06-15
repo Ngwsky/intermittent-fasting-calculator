@@ -32,7 +32,7 @@
 	export let dense: boolean = false;
     */
 
-	let selectedItemIndexes: string[] = [];
+	let selectedItemIndexes: number[] = [];
 	let refItems: readonly any[] = [];
 	let filteredAndSortedItems: readonly any[] = [];
 	let vitems: readonly any[] = [];
@@ -52,7 +52,7 @@
 			v.__selected = selectedItemList.some((si) => {
 				return headers.findIndex((h) => si[h.value] != v.item[h.value]) === -1;
 			});
-			if (v.__selected) selectedItemIndexes.push(String(i));
+			if (v.__selected) selectedItemIndexes.push(i);
 		});
 		console.debug('updateSelected', selectedItemList, refItems);
 	}
@@ -84,7 +84,7 @@
 		changeSelected(selectedItemIndexes);
 	}
 
-	function changeSelected(selected: string[]) {
+	function changeSelected(selected: number[]) {
 		console.debug('changeSelected', selected);
 		if (selected) {
 			if (0 < selected.length) {
@@ -103,10 +103,8 @@
 		}
 	}
 
-	function selectRow(event: any, itemindex: string) {
-		let i = Number(itemindex);
-
-		console.debug('selectRow', event, itemindex, refItems[i]);
+	function selectRow(event: any, itemindex: number) {
+		console.debug('selectRow', event, itemindex, refItems[itemindex]);
 
 		if (singleSelect) {
 			if (selectedItemIndexes.length === 1) {
